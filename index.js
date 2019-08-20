@@ -10,9 +10,15 @@ const funcs = [
 
 const serverless = new Serverless();
 
+ //https://github.com/serverless/serverless/blob/710139eee97fff5f0f98839521579d1fb65cba0a/lib/utils/getServerlessConfigFile.js
 const Demo = () => {
-	console.log(JSON.stringify(serverless.init()));
-	console.log(JSON.stringify(serverless.run("logs")));
+	serverless.processedInput = { commands: ["logs"], options: {
+		"config": "./lambda1/serverless.yml",
+	} };
+	JSON.stringify(serverless.init())
+	// serverless.cli = new CLI(serverless);
+    //   serverless.processedInput = { commands: [], options: {} };
+	JSON.stringify(serverless.run("logs -f hello"))
 	return (
 		<>
 			<Static>
