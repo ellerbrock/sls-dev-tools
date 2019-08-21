@@ -64,21 +64,22 @@ class Demo extends Component {
   }
 
   getLogEvents(logGroups) {
-    const logs = {}
+    const logs = {};
     logGroups.forEach(group => {
       var params = {
         logGroupName: group.logGroupName,
         limit: 10,
+        // startTime: 1566418200
       };
       this.cloudwatchLogs.filterLogEvents(params, (err, data) => {
         if (err) {
           console.log(err, err.stack);
         } else {
           logs[group.arn] = data.events;
+          this.setState({ logs });
         }
       });
     });
-    this.setState({ logs })
   }
 
   render() {
@@ -103,7 +104,11 @@ class Demo extends Component {
           <FullWidthSeparator />
         --- Log Group ----
         {this.state.logGroups.map(logGroup => (
-          <LogGroup logGroup={logGroup} key={logGroup.arn} />
+          <LogGroup
+            logGroup={logGroup}
+            key={logGroup.arn}
+            logs={this.state.logs[logGroup.arn]}
+          />
         ))}
       </>
     );
